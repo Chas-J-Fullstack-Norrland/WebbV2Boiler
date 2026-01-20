@@ -1,4 +1,4 @@
-const CACHE_NAME = 'blog-pwa-v1';
+const CACHE_NAME = 'blog-pwa-v1-final';
 
 const ASSETS_TO_CACHE = [
   '/',
@@ -6,9 +6,9 @@ const ASSETS_TO_CACHE = [
   '/about.html',
   '/create.html',
   '/post.html',
-  'public/manifest.json',
-  'public/images/icon-192.png',
-  'public/images/icon-512.png'
+  '/manifest.json',
+  '/images/icon-192.png',
+  '/images/icon-512.png'
 ];
 
 self.addEventListener('install', (event) => {
