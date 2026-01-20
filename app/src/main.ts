@@ -1,5 +1,5 @@
 import './style.css'
-import db from '../db.json';
+import db from './data/db.json';
 
 // --- TYPER ---
 interface Post {
@@ -284,4 +284,16 @@ function deleteLocalComment(commentId: string, postId: string) {
   const updated = current.filter((c: Comment) => c.id !== commentId);
   localStorage.setItem(LOCAL_STORAGE_COMMENTS_KEY, JSON.stringify(updated));
   renderComments(postId);
+}
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js')
+      .then((registration) => {
+        console.log('ServiceWorker registration successful with scope: ', registration.scope);
+      })
+      .catch((err) => {
+        console.log('ServiceWorker registration failed: ', err);
+      });
+  });
 }

@@ -1,18 +1,10 @@
-import { defineConfig } from 'vite'
-import tailwindcss from '@tailwindcss/vite'
+import { defineConfig } from 'vite';
 
 export default defineConfig({
-  plugins: [
-    tailwindcss()
-  ],
+  root: 'app', // Detta är magin. Vite kommer tro att "app"-mappen är roten.
   build: {
-    rollupOptions: {
-      input: {
-        main: 'index.html',
-        about: 'about.html',
-        create: 'create.html',
-        post: 'post.html'
-      }
-    }
-  }
-})
+    outDir: '../dist', // Vi vill fortfarande att bygget ska hamna utanför 'app'
+    emptyOutDir: true,
+  },
+  publicDir: 'public' // Vite letar nu efter public inuti 'app/public' automatiskt
+});
