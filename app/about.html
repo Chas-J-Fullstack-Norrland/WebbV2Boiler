@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="sv">
+    <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Om oss" />
+    <title>Om Oss | ABC News</title>
+    
+    <link rel="manifest" href="public/manifest.json" />
+    <meta name="theme-color" content="#ffffff" />
+    <link rel="apple-touch-icon" href="public/images/icon-192.png" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    </head>
+
+<body class="bg-slate-50 text-slate-800 antialiased font-sans selection:bg-blue-100 selection:text-blue-900 flex flex-col min-h-screen w-full overflow-x-hidden">    
+    
+    <header class="bg-white shadow-sm sticky top-0 z-10 w-full">
+      <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+        <a href="/index.html" class="text-xl font-bold tracking-tight text-slate-900 hover:text-blue-600 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-md px-1">
+          ABC News
+        </a>
+        <nav>
+          <ul class="flex space-x-6">
+            <li>
+              <a href="/index.html" class="text-sm font-medium text-slate-600 hover:text-blue-600 transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-md px-2 py-1">Start</a>
+            </li>
+            <li>
+              <a href="/about.html" class="text-sm font-medium text-blue-600 underline decoration-2 underline-offset-4 focus:outline-none focus:ring-2 focus:ring-blue-500 rounded-md px-2 py-1" aria-current="page">Om</a>
+            </li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main class="flex-grow w-full max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <article class="bg-white p-8 rounded-xl shadow-sm border border-slate-100">
+        <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-900 mb-6 tracking-tight">
+          Välkommen till <strong>ABC News</strong>.
+        </h1>
+        
+        <div class="space-y-6 text-lg leading-relaxed text-slate-700">
+          
+          <p>
+            Syftet med denna plattform är att demonstrera denna övning i:
+          </p>
+
+          <ul class="list-disc list-inside space-y-2 pl-4 marker:text-blue-500">
+            <li><span class="font-semibold text-slate-900">Tailwind CSS</span></li>
+            <li><span class="font-semibold text-slate-900">TypeScript</span></li>
+            <li><span class="font-semibold text-slate-900">Vite</span></li>
+          </ul>
+
+          <h2 class="text-2xl font-bold text-slate-900 mt-8 mb-4">Om Oss</h2>
+          <p>
+            Denna webbapp är skapad av oss som är här i Sundsvallsgruppen idag.
+          </p>
+        </div>
+
+        <div class="mt-10 pt-6 border-t border-slate-100">
+          <p class="text-sm text-slate-500 italic">
+            Version 1.0.0 &bull; Byggd för utbildningssyfte.
+          </p>
+        </div>
+      </article>
+
+    </main>
+
+    <footer class="w-full bg-white border-t border-slate-200 py-4 mt-auto">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row justify-between items-center gap-4">
+        <div class="text-slate-500 text-sm">
+          &copy; 2024 ABC News. Alla rättigheter förbehållna.
+        </div>
+      </div>
+    </footer>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
