@@ -1,4 +1,4 @@
-import './style.css'
+import './style.css';
 import db from './data/db.json';
 
 // --- TYPER ---
