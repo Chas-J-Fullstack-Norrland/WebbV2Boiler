@@ -52,7 +52,7 @@ export async function getComments() {
   }
 }
 
-export async function getPost(id:Number) {
+export async function getPost(id:String) {
   try {
     const response = await fetch(`${BASE_URL}/posts/${id}`);
 
@@ -70,7 +70,7 @@ export async function getPost(id:Number) {
   }
 }
 
-export async function getComment(id:Number) {
+export async function getComment(id:String) {
   try {
     const response = await fetch(`${BASE_URL}/comments/${id}`);
 
@@ -211,13 +211,13 @@ export async function updateComment(comment:Comment) {
   return response.json();
 }
 
-export async function removePost(id:number) {
+export async function removePost(id:String) {
   await fetch(`${BASE_URL}/posts/${id}`, {
     method: 'DELETE'
   });
 }
 
-export async function removeComment(id:number) {
+export async function removeComment(id:String) {
   await fetch(`${BASE_URL}/comments/${id}`, {
     method: 'DELETE'
   });

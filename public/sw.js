@@ -1,12 +1,10 @@
-// sw.js
-const CACHE_NAME = 'checklist-pwa-v1';
+const CACHE_NAME = 'blog-pwa-v1-final';
 
 const ASSETS_TO_CACHE = [
   '/',
-  '/index.html',
   '/about.html',
   '/create.html',
-  '/checklists.html',
+  '/post.html',
   '/manifest.json',
   '/images/icon-192.png',
   '/images/icon-512.png'
@@ -15,8 +13,10 @@ const ASSETS_TO_CACHE = [
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      console.log('[SW] Cachar statiska filer');
-      return cache.addAll(ASSETS_TO_CACHE);
+      console.log('[Service Worker] Caching core assets');
+      return cache.addAll(ASSETS_TO_CACHE).catch(err => {
+        console.error('[Service Worker] Pre-caching failed:', err);
+      });
     })
   );
 });
@@ -27,7 +27,7 @@ self.addEventListener('activate', (event) => {
       return Promise.all(
         keyList.map((key) => {
           if (key !== CACHE_NAME) {
-            console.log('[SW] Tar bort gammal cache:', key);
+            console.log('[Service Worker] Removing old cache', key);
             return caches.delete(key);
           }
         })
@@ -38,34 +38,27 @@ self.addEventListener('activate', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
+  if (event.request.method !== 'GET') return;
+  if (event.request.url.startsWith('chrome-extension')) return;
+
   const url = new URL(event.request.url);
 
-  if (url.protocol === 'chrome-extension:') return;
+  if (url.origin !== self.location.origin) return;
 
-  if (url.pathname.startsWith('/api/')) {
-    return;
-  }
-
-  if (event.request.method === 'GET') {
-    event.respondWith(
-      caches.match(event.request).then((cachedResponse) => {
-        if (cachedResponse) {
-          return cachedResponse;
-        }
-
-        return fetch(event.request).then((response) => {
-          if (!response || response.status !== 200 || response.type !== 'basic') {
-            return response;
+  event.respondWith(
+    caches.match(event.request).then((cachedResponse) => {
+      const fetchPromise = fetch(event.request)
+        .then((networkResponse) => {
+          if (networkResponse && networkResponse.status === 200) {
+            caches.open(CACHE_NAME).then((cache) => {
+              cache.put(event.request, networkResponse.clone());
+            });
           }
+          return networkResponse;
+        })
+        .catch(() => cachedResponse); // offline fallback
 
-          const responseToCache = response.clone();
-          caches.open(CACHE_NAME).then((cache) => {
-            cache.put(event.request, responseToCache);
-          });
-
-          return response;
-        });
-      })
-    );
-  }
+      return cachedResponse || fetchPromise;
+    })
+  );
 });
