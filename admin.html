@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="sv">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin | CheckList</title>
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="theme-color" content="#ffffff" />
+    <link rel="apple-touch-icon" href="/images/icon-192.png" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  </head>
+  <body class="bg-slate-50 text-slate-800 antialiased font-sans flex flex-col min-h-screen">
+    <header class="w-full sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200 shadow-sm">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+        <a href="/index.html" class="text-xl font-bold tracking-tight text-slate-900 hover:text-blue-600 transition-colors">
+          CheckList
+        </a>
+        <nav>
+          <ul class="flex space-x-6">
+            <li><a href="/index.html" class="text-sm font-medium text-slate-600 hover:text-blue-600">Start</a></li>
+            <li><a href="/about.html" class="text-sm font-medium text-slate-600 hover:text-blue-600">Om</a></li>
+            <li><a href="/login.html" id="login-link" class="text-sm font-medium text-slate-600 hover:text-blue-600 hidden">Admin Login</a></li>
+            <li><a href="/admin.html" id="admin-link" class="text-sm font-medium text-blue-600 underline decoration-2 underline-offset-4">Admin</a></li>
+            <li><button id="logout-btn" class="text-sm font-medium text-slate-600 hover:text-blue-600">Logga ut</button></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <main class="flex-grow w-full max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <h1 class="text-3xl font-extrabold text-slate-900 mb-6">Adminpanel</h1>
+      <p class="text-slate-600 mb-6 text-sm">
+        Lista över alla publicerade checklistor. Avpublicera eller moderera kommentarer (markera OK eller radera).
+      </p>
+      <section id="admin-checklists"></section>
+    </main>
+
+    <footer class="w-full bg-white border-t border-slate-200 py-4 mt-auto">
+      <div class="max-w-7xl mx-auto px-4 text-center text-slate-500 text-sm">
+        &copy; 2024 CheckList.
+      </div>
+    </footer>
+
+    <script type="module" src="src/main.ts"></script>
+  </body>
+</html>
