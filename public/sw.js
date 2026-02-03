@@ -1,11 +1,12 @@
-const CACHE_NAME = 'blog-pwa-v1-final';
+// sw.js
+const CACHE_NAME = 'checklist-pwa-v1';
 
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
   '/about.html',
   '/create.html',
-  '/post.html',
+  '/checklists.html',
   '/manifest.json',
   '/images/icon-192.png',
   '/images/icon-512.png'
@@ -14,10 +15,8 @@ const ASSETS_TO_CACHE = [
 self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      console.log('[Service Worker] Caching core assets');
-      return cache.addAll(ASSETS_TO_CACHE).catch(err => {
-        console.error('[Service Worker] Pre-caching failed:', err);
-      });
+      console.log('[SW] Cachar statiska filer');
+      return cache.addAll(ASSETS_TO_CACHE);
     })
   );
 });
@@ -28,7 +27,7 @@ self.addEventListener('activate', (event) => {
       return Promise.all(
         keyList.map((key) => {
           if (key !== CACHE_NAME) {
-            console.log('[Service Worker] Removing old cache', key);
+            console.log('[SW] Tar bort gammal cache:', key);
             return caches.delete(key);
           }
         })
@@ -39,28 +38,34 @@ self.addEventListener('activate', (event) => {
 });
 
 self.addEventListener('fetch', (event) => {
-  if (event.request.url.startsWith('chrome-extension')) return;
+  const url = new URL(event.request.url);
 
-  if (event.request.method !== 'GET') return;
+  if (url.protocol === 'chrome-extension:') return;
 
-  event.respondWith(
-    caches.match(event.request).then((cachedResponse) => {
-      if (cachedResponse) {
-        return cachedResponse;
-      }
+  if (url.pathname.startsWith('/api/')) {
+    return;
+  }
 
-      return fetch(event.request).then((response) => {
-        if (!response || response.status !== 200) {
-          return response;
+  if (event.request.method === 'GET') {
+    event.respondWith(
+      caches.match(event.request).then((cachedResponse) => {
+        if (cachedResponse) {
+          return cachedResponse;
         }
 
-        const responseToCache = response.clone();
-        caches.open(CACHE_NAME).then((cache) => {
-          cache.put(event.request, responseToCache);
-        });
+        return fetch(event.request).then((response) => {
+          if (!response || response.status !== 200 || response.type !== 'basic') {
+            return response;
+          }
 
-        return response;
-      });
-    })
-  );
+          const responseToCache = response.clone();
+          caches.open(CACHE_NAME).then((cache) => {
+            cache.put(event.request, responseToCache);
+          });
+
+          return response;
+        });
+      })
+    );
+  }
 });
