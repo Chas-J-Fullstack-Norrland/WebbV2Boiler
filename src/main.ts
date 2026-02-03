@@ -30,6 +30,11 @@ const path = window.location.pathname;
     initCreatePage();
   } else if (path === '/checklists.html') {
     await initPostPage();
+  
+  } else if (path === '/login.html') {
+    initLoginPage();
+  } else if (path === '/admin.html') {
+    await initAdminPage();
   }
 })();
 
@@ -269,4 +274,34 @@ async function renderTasks(checklistId: string) {
   } catch (err) {
     listElement.innerHTML = '<p class="text-red-500 font-bold">Kunde inte hämta uppgifter från servern.</p>';
   }
+  // login page
+  function initLoginPage() {
+  if (isLoggedIn()) {
+    window.location.href = '/admin.html';
+    return;
+  }
+
+  const form = document.getElementById('login-form') as HTMLFormElement | null;
+  if (!form) return;
+
+  const userInput = document.getElementById('username') as HTMLInputElement;
+  const passInput = document.getElementById('password') as HTMLInputElement;
+  const errorEl = document.getElementById('login-error');
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const ok = login(userInput.value.trim(), passInput.value.trim());
+    if (!ok) {
+      if (errorEl) {
+        errorEl.textContent = 'Fel användarnamn eller lösenord';
+        errorEl.classList.remove('hidden');
+      }
+      return;
+    }
+    window.location.href = '/admin.html';
+  });
+}
+
+
+
 }
