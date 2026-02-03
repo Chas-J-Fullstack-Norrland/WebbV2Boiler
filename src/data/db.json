@@ -1,57 +1,66 @@
 {
-  "posts": [
+  "checklists": [
     {
       "id": "1",
-      "title": "Varför TypeScript är framtiden",
-      "content": "TypeScript har revolutionerat hur vi skriver JavaScript. Genom att lägga till statisk typning kan vi fånga fel redan under utvecklingen snarare än i produktion. Det sparar tid och pengar.",
-      "author": "SeniorDev",
-      "date": "2024-05-20"
+      "title": "Inköp Hemköp",
+      "author": "Svartakatten",
+      "date": "2026-01-22"
     },
     {
       "id": "2",
-      "title": "Tailwind CSS v4: En ny era",
-      "content": "Den nya versionen av Tailwind tar bort behovet av en tung konfigurationsfil och använder en ny motor byggd på Rust för blixtsnabb kompilering. Det är enklare än någonsin.",
-      "author": "SeniorDev",
-      "date": "2024-05-21"
+      "title": "Packlista Fjällen",
+      "author": "Johan",
+      "date": "2026-01-21"
     },
     {
-      "id": "3",
-      "title": "Bygga PWA med Vite",
-      "content": "Progressive Web Apps ger en app-liknande upplevelse direkt i webbläsaren. Med Vite kan vi snabbt sätta upp en miljö och leverera en optimerad upplevelse.",
-      "author": "SeniorDev",
-      "date": "2024-05-22"
+      "id": "3f0b",
+      "title": "hej",
+      "author": "123",
+      "date": "2026-01-22T11:40:21.522Z"
     }
   ],
-  "comments": [
+  "tasks": [
     {
       "id": "101",
-      "postId": "1",
-      "text": "Håller helt med! Det har räddat mig många gånger.",
-      "author": "DevJohan"
+      "checklistId": "1",
+      "text": "Mjölk 1.5L",
+      "completed": true
     },
     {
       "id": "102",
-      "postId": "1",
-      "text": "Lite svårt att lära sig i början, men värt det.",
-      "author": "JuniorDev"
+      "checklistId": "1",
+      "text": "Havregryn",
+      "completed": true
     },
     {
       "id": "103",
-      "postId": "2",
-      "text": "Älskar att slippa config-filen!",
-      "author": "CSS_Master"
+      "checklistId": "2",
+      "text": "Skidglasögon",
+      "completed": true
     },
     {
-      "id": "104",
-      "postId": "2",
-      "text": "Prestandan verkar otrolig på v4.",
-      "author": "WebSpeed"
+      "id": "3aef",
+      "checklistId": null,
+      "text": "1234",
+      "completed": false
     },
     {
-      "id": "105",
-      "postId": "3",
-      "text": "Vilket manifest använder du?",
-      "author": "MobileFirst"
+      "id": "c8b4",
+      "checklistId": null,
+      "text": "13",
+      "completed": true
+    },
+    {
+      "id": "73b0",
+      "checklistId": "1",
+      "text": "12313",
+      "completed": false
+    },
+    {
+      "id": "21ab",
+      "checklistId": "3f0b",
+      "text": "1234",
+      "completed": false
     }
   ]
 }
