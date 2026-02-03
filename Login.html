@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Logga in</title>
+</head>
+<body>
+    <main class="login">
+        <h1>Logga In</h1>
+        <form id="loginForm">
+            <label for="username">Användarnamn</label>
+            <input type="text" id="username" name="username" required />
+            <label for="password">Lösenord</label>
+            <input type="password" id="password" name="password" required />
+            <button type="submit">Logga in</button>
+        </form>
+        <p id="error-message"></p>
+    </main>
+    <!--Vite entry-->
+    <script type="module" src="/main.js"></script>
+</body>
+</html>
