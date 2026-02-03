@@ -17,6 +17,7 @@ interface Task {
   checklistId: string;
   text: string;
   completed: boolean;
+  approved?: boolean;  // for admin “mark”
 }
 
 // --- ROUTING ---
