@@ -269,4 +269,156 @@ async function renderTasks(checklistId: string) {
   } catch (err) {
     listElement.innerHTML = '<p class="text-red-500 font-bold">Kunde inte hämta uppgifter från servern.</p>';
   }
+  function initLoginPage() {
+  if (isLoggedIn()) {
+    window.location.href = '/admin.html';
+    return;
+  }
+
+  const form = document.getElementById('login-form') as HTMLFormElement | null;
+  if (!form) return;
+
+  const userInput = document.getElementById('username') as HTMLInputElement;
+  const passInput = document.getElementById('password') as HTMLInputElement;
+  const errorEl = document.getElementById('login-error');
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const ok = login(userInput.value.trim(), passInput.value.trim());
+    if (!ok) {
+      if (errorEl) {
+        errorEl.textContent = 'Fel användarnamn eller lösenord';
+        errorEl.classList.remove('hidden');
+      }
+      return;
+    }
+    window.location.href = '/admin.html';
+  });
+}
+// admin function
+async function initAdminPage() {
+  if (!isLoggedIn()) {
+    window.location.href = '/login.html';
+    return;
+  }
+
+  const container = document.getElementById('admin-checklists');
+  if (!container) return;
+
+  container.innerHTML = '<p class="text-center text-slate-500 py-6">Laddar checklistor...</p>';
+
+  try {
+    const checklists: Checklist[] = await getChecklists();
+    if (checklists.length === 0) {
+      container.innerHTML = '<p class="text-center text-slate-500 py-6">Inga checklistor.</p>';
+      return;
+    }
+
+    container.innerHTML = '';
+    for (const list of checklists) {
+      const card = document.createElement('div');
+      card.className = 'bg-white p-6 rounded-xl shadow-sm border border-slate-100 mb-4';
+
+      const dateStr = new Date(list.date).toLocaleDateString('sv-SE');
+
+      card.innerHTML = `
+        <div class="flex justify-between items-center mb-3">
+          <div>
+            <h2 class="text-lg font-bold text-slate-900">${list.title}</h2>
+            <p class="text-sm text-slate-500">Av ${list.author} • ${dateStr}</p>
+          </div>
+          <button class="unpublish-btn text-red-600 hover:text-red-700 text-sm font-semibold">
+            Avpublicera
+          </button>
+        </div>
+        <button class="toggle-comments text-sm text-blue-600 hover:underline mb-3">
+          Visa kommentarer
+        </button>
+        <div class="tasks-container hidden border-t border-slate-200 pt-3 space-y-2"></div>
+      `;
+
+      const tasksContainer = card.querySelector('.tasks-container') as HTMLDivElement;
+      const toggleBtn = card.querySelector('.toggle-comments') as HTMLButtonElement;
+      const unpublishBtn = card.querySelector('.unpublish-btn') as HTMLButtonElement;
+
+      toggleBtn.addEventListener('click', async () => {
+        const isHidden = tasksContainer.classList.contains('hidden');
+        if (isHidden) {
+          await renderAdminTasks(list.id, tasksContainer);
+          tasksContainer.classList.remove('hidden');
+          toggleBtn.textContent = 'Dölj kommentarer';
+        } else {
+          tasksContainer.classList.add('hidden');
+          toggleBtn.textContent = 'Visa kommentarer';
+        }
+      });
+
+      unpublishBtn.addEventListener('click', async () => {
+        if (confirm(`Vill du avpublicera "${list.title}"?`)) {
+          await deleteChecklist(list.id);
+          await initAdminPage();
+        }
+      });
+
+      container.appendChild(card);
+    }
+  } catch {
+    container.innerHTML = '<p class="text-center text-red-600 font-bold py-6">Kunde inte ladda admin-data.</p>';
+  }
+}
+
+async function renderAdminTasks(checklistId: string, container: HTMLElement) {
+  container.innerHTML = '<p class="text-slate-400 text-sm">Laddar kommentarer...</p>';
+
+  try {
+    const tasks: Task[] = await getTasks(checklistId);
+    if (tasks.length === 0) {
+      container.innerHTML = '<p class="text-slate-400 text-sm">Inga kommentarer.</p>';
+      return;
+    }
+
+    container.innerHTML = '';
+    tasks.forEach(task => {
+      const row = document.createElement('div');
+      row.className = 'flex items-center justify-between text-sm';
+
+      const approved = !!task.approved;
+
+      row.innerHTML = `
+        <span class="${approved ? 'text-green-700 font-medium' : 'text-slate-700'}">
+          ${task.text}
+        </span>
+        <div class="flex gap-2">
+          <button class="mark-btn px-2 py-1 rounded border text-xs ${
+            approved ? 'border-green-600 text-green-700' : 'border-blue-600 text-blue-700'
+          }">
+            ${approved ? 'Avmarkera' : 'Markera OK'}
+          </button>
+          <button class="delete-btn px-2 py-1 rounded border border-red-600 text-red-700 text-xs">
+            Radera
+          </button>
+        </div>
+      `;
+
+      const markBtn = row.querySelector('.mark-btn') as HTMLButtonElement;
+      const deleteBtn = row.querySelector('.delete-btn') as HTMLButtonElement;
+
+      markBtn.addEventListener('click', async () => {
+        await updateTask(task.id, { approved: !approved });
+        await renderAdminTasks(checklistId, container);
+      });
+
+      deleteBtn.addEventListener('click', async () => {
+        if (confirm(`Ta bort kommentaren "${task.text}"?`)) {
+          await deleteTask(task.id);
+          await renderAdminTasks(checklistId, container);
+        }
+      });
+
+      container.appendChild(row);
+    });
+  } catch {
+    container.innerHTML = '<p class="text-red-600 text-sm">Kunde inte ladda kommentarer.</p>';
+   }
+  } 
 }
