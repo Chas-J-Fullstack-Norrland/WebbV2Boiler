@@ -6,15 +6,11 @@ export default defineConfig(({ mode }) => ({
   plugins: [
     tailwindcss(),
     VitePWA({
-      registerType: 'autoUpdate',
-
-      devOptions: {
-        enabled: mode === 'pwa',
-      },
+      devOptions: { enabled: true },
 
       manifest: {
-        name: 'Things App',
-        short_name: 'Things',
+        name: 'ABC NEWS',
+        short_name: 'ABCN',
         start_url: '/',
         display: 'standalone',
         theme_color: '#1a73e8',

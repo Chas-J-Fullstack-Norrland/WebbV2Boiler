@@ -1,6 +1,6 @@
 {
-  "name": "Checklist renamed",
-  "short_name": "CheckList",
+  "name": "ABC News Blogg",
+  "short_name": "ABC News",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#f8fafc",

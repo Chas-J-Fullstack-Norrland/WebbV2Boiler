@@ -97,7 +97,7 @@ async function initIndexPage() {
   const allPosts = await getAllPostsSorted();
   const allComments = await getComments();
 
-  const postsWithComments: PostWithComments[] = allPosts.map(post => ({
+  const postsWithComments: PostWithComments[] = allPosts.map((post: Post) => ({
     ...post,
     comments: allComments.filter(c => c.postid === post.id)
   }));
@@ -105,8 +105,6 @@ async function initIndexPage() {
   blogListElement.innerHTML = '';
 
   postsWithComments.forEach(post => {
-    const isLocal = post.id.startsWith('local-');
-
     const article = document.createElement('article');
     article.className = 'bg-white rounded-xl shadow-sm border border-slate-100 overflow-hidden hover:shadow-md transition-shadow flex flex-col h-full relative group';
 
@@ -117,13 +115,12 @@ async function initIndexPage() {
 
     article.innerHTML = `
       <div class="h-48 ${bgClass} w-full relative">
-        ${isLocal ? `
           <button class="delete-post-btn absolute top-2 right-2 bg-white/10 hover:bg-red-600 text-white p-2 rounded-full backdrop-blur-sm transition-all opacity-100 sm:opacity-0 sm:group-hover:opacity-100 cursor-pointer" title="Ta bort inlägg">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
             </svg>
           </button>
-        ` : ''}
+        : ''}
       </div>
       
       <div class="p-6 flex flex-col flex-1">
@@ -157,15 +154,13 @@ async function initIndexPage() {
       </div>
     `;
 
-    if (isLocal) {
       const deleteBtn = article.querySelector('.delete-post-btn');
       if (deleteBtn) {
         deleteBtn.addEventListener('click', (e) => {
           e.stopPropagation();
-          removePost(post.id);
+          removePost(post.id).then(() => { initIndexPage(); });
         });
       }
-    }
 
     blogListElement.appendChild(article);
   });
@@ -207,7 +202,7 @@ async function initPostPage() {
   }
 
   const allPosts = await getAllPostsSorted();
-  const post = allPosts.find(p => p.id === postId);
+  const post = allPosts.find((p: Post) => p.id === postId);
 
   if (!post) {
     document.querySelector('main')!.innerHTML = '<div class="text-center text-red-600 mt-10">Inlägget hittades inte.</div>';
@@ -262,7 +257,6 @@ async function renderComments(postId: string) {
 
   listElement.innerHTML = '';
   postComments.forEach(comment => {
-    const isLocal = comment.id.startsWith('local-');
     const div = document.createElement('div');
     div.className = 'bg-slate-50 p-4 rounded-lg border border-slate-100 group hover:border-slate-300 transition-colors';
     
@@ -270,31 +264,28 @@ async function renderComments(postId: string) {
       <div class="flex items-center justify-between mb-2">
         <div class="flex items-center space-x-2">
           <span class="font-semibold text-slate-900 text-sm">${comment.author}</span>
-          ${isLocal ? '<span class="text-[10px] bg-blue-100 text-blue-800 px-1.5 py-0.5 rounded-full uppercase tracking-wider font-bold">Du</span>' : ''}
+          '<span class="text-[10px] bg-blue-100 text-blue-800 px-1.5 py-0.5 rounded-full uppercase tracking-wider font-bold">Du</span>' : ''}
         </div>
-        ${isLocal ? `
           <button class="delete-btn text-slate-400 hover:text-red-600 transition-colors p-1 cursor-pointer" title="Ta bort kommentar">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
             </svg>
           </button>
-        ` : ''}
+         : ''}
       </div>
       <p class="text-slate-700 text-sm break-words">${comment.text}</p>
     `;
-
-    if (isLocal) {
       div.querySelector('.delete-btn')?.addEventListener('click', () => {
-        removeComment(comment.id);
+        removeComment(comment.id).then(() => {renderComments(postId);
       });
-    }
+    });
 
     listElement.appendChild(div);
   });
 }
 
 // --- DATA HANTERING ---
- async function getAllPostsSorted(): Promise<Post[]> {
+async function getAllPostsSorted(): Promise<Post[]> {
   const staticPosts: Post[] =  await getPosts();
   return staticPosts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 }
