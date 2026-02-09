@@ -1,4 +1,4 @@
-const ADMIN_COOKIE = 'checklist_admin';
+const ADMIN_COOKIE = 'username';
 
 export function isLoggedIn(): boolean {
   return document.cookie.split('; ').some(c => c.startsWith(`${ADMIN_COOKIE}=`));
@@ -9,7 +9,7 @@ export function login(username: string, password: string): boolean {
   if (username === 'admin' && password === 'admin123') {
     const expires = new Date();
     expires.setDate(expires.getDate() + 1); // 1 day
-    document.cookie = `${ADMIN_COOKIE}=1; path=/; expires=${expires.toUTCString()}`;
+    document.cookie = `${ADMIN_COOKIE}=${username}; path=/; expires=60`;
     return true;
   }
   return false;

@@ -2,6 +2,7 @@ import './style.css';
 import { 
   getPost,getComment,getComments,getPosts,addComment,addPost,updateComment,updatePost,removeComment,removePost
 } from './api';
+import { login } from './auth';
 
 // --- TYPER ---
 export interface Post {
@@ -24,6 +25,55 @@ export interface Comment {
 
 interface PostWithComments extends Post {
   comments: Comment[];
+}
+
+let userinput = document.getElementById("user") as HTMLInputElement | null;
+let passinput = document.getElementById("password") as HTMLInputElement | null;
+let currentUserElement = document.getElementById("current-user")
+let adminlink = document.getElementById("adminhref")
+const userButton = document.getElementById("user-button");
+
+userButton?.addEventListener('click', () => {    
+    if (userinput && passinput && login(userinput.value, passinput.value)) {
+      window.location.href = '/admin.html';
+    } else
+    {      alert("Fel användarnamn eller lösenord");
+    }
+});
+
+function getCookieValue(name: string): string | null {
+  const cookie = document.cookie
+    .split("; ")
+    .find(row => row.startsWith(name + "="));
+  
+  return cookie ? cookie.split("=")[1] : null;
+}
+
+function usercookieset(): void {
+  if (!currentUserElement) return;
+  
+  const username = getCookieValue("username");
+  console.log("Current user from cookie:", username);
+  currentUserElement.textContent = username || "no-user";
+  console.log("Admin link element:", adminlink);
+  if (username =="admin") {
+    adminlink?.classList.remove("hidden");
+  } else {
+    adminlink?.classList.add("hidden");
+  }
+}
+usercookieset();
+
+function getErrorBanner(parentElement: HTMLElement) {
+  let banner = document.getElementById('server-error-banner');
+  if (!banner) {
+    banner = document.createElement('div');
+    banner.id = 'server-error-banner';
+    banner.className = 'hidden bg-red-600 text-white p-4 rounded-lg mb-6 font-bold text-center animate-pulse shadow-lg';
+    banner.innerText = '⚠️ Ingen anslutning till servern. Appen är låst.';
+    parentElement.prepend(banner);
+  }
+  return banner;
 }
 
 

@@ -9,3 +9,86 @@
 html {
   scroll-behavior: smooth;
 }
+
+header {
+    background: linear-gradient(135deg, #a8b4ea 0%, #6585f9 100%);
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+}
+
+.logininput {
+    background: rgba(29, 9, 42, 0.2);
+    padding: 8px 8px;
+    border-radius: 4px;
+    font-size: 0.9em;
+    font-weight: 500;
+    vertical-align: middle;
+}
+
+/* Status badge */
+#status {
+    background: rgba(255,255,255,0.2);
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 0.9em;
+    font-weight: 500;
+    vertical-align: middle;
+}
+
+#status:before {
+    content: "●";
+    margin-right: 8px;
+}
+
+/* Online/Offline styling */
+body.online #status {
+    background: #4CAF50;
+    color: white;
+}
+
+body.offline #status {
+    background: #f44336;
+    color: white;
+}
+
+body.sync #status {
+    background: #130268;
+    color: white;
+}
+
+nav {
+    background: rgba(238, 239, 249, 0.2);
+    padding: 8px 8px;
+    border-radius: 4px;
+}
+
+#user-section {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+#current-user {
+    background: rgba(255,255,255,0.2);
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 0.9em;
+    font-weight: 200;
+    vertical-align: middle;
+}
+
+#user-button {
+    background: #667eea;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 8px;
+    font-size: 0.9em;
+    font-weight: 500;
+    cursor: pointer;
+    vertical-align: middle;
+    transition: background-color 0.2s;
+}
