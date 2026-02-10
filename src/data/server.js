@@ -1,19 +1,19 @@
 import jsonServer from "json-server";
 import dotenv from "dotenv";
+import crypto from "crypto";
 
 dotenv.config();
 
 const server = jsonServer.create();
-const router = jsonServer.router("./src/data/db.json");
+const router = jsonServer.router("src/data/db.json");
 const middlewares = jsonServer.defaults({
-  static: "private",
+  static: "public",
   logger: true
 });
 
 server.use(middlewares);
 server.use(jsonServer.bodyParser);
 
-import crypto from "crypto";
 server.use((req, res, next) => {
     const etag = crypto
         .createHash("md5")
@@ -32,6 +32,24 @@ server.get("/health", (_req, res) => {
 
 // --------- json-server router ---------
 server.use(router);
+
+// ETag middleware - AFTER router
+server.use((req, res, next) => {
+  const originalSend = res.send;
+  
+  res.send = function(data) {
+    if (data && typeof data === 'object') {
+      const etag = crypto
+        .createHash("md5")
+        .update(JSON.stringify(data))
+        .digest("hex");
+      res.setHeader("ETag", etag);
+    }
+    return originalSend.call(this, data);
+  };
+  
+  next();
+});
 
 const port = process.env.PORT || 3001;
 server.listen(port, () => {
