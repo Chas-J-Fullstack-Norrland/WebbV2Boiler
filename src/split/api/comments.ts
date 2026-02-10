@@ -20,8 +20,6 @@ export async function getComments(): Promise<Comment[]> {
   }
 }
 
-let sample = DataTransfer;
-
 /**
  * Hämtar en enskild kommentar via ID.
  */
