@@ -5,7 +5,6 @@ export function isLoggedIn(): boolean {
 }
 
 export function login(username: string, password: string): boolean {
-  // Simple hard‑coded login for demo
   if (username === 'admin' && password === 'admin123') {
     const expires = new Date();
     expires.setDate(expires.getDate() + 1); // 1 day

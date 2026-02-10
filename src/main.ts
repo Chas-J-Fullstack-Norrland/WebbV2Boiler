@@ -59,6 +59,12 @@ async function initApp(){
 
 initApp();
 
+window.addEventListener('online', async () => {
+  console.log("Internet is back! Syncing...");
+  
+  const { flushPostQueue } = await import('./api');
+  await flushPostQueue();
+});
 
 if ('serviceWorker' in navigator  && import.meta.env.PROD) {
   window.addEventListener('load', () => {
