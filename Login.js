@@ -1,4 +1,5 @@
 import "./style.css";
+
 const loginForm = document.getElementById("loginForm");
 const errorMessage = document.getElementById("errorMessage");
 loginForm.addEventListener("submit", (e) => {
@@ -15,6 +16,3 @@ loginForm.addEventListener("submit", (e) => {
         errorMessage.textContent = "Fel användarnamn eller lösenord";
     }
 });
-if (localStorage.getItem("isLoggedIn")!== "true") {
-    window.location.href = "/";
-}
