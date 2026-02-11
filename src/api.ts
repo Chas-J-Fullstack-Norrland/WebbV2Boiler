@@ -130,7 +130,7 @@ export async function addPost(post:Post) {
 export async function addComment(comment:Comment) {
   
   try{
-    const response = await fetch(`${BASE_URL}/posts/`, {
+    const response = await fetch(`${BASE_URL}/comments/`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
