@@ -54,6 +54,10 @@ async function initApp(){
     import('./split/postPage').then(module => {
       module.initPostPage();
     })
+  } else if (path === '/admin.html') {
+    import('./split/adminPage').then(module => {
+      module.initAdminPage();
+    })
   }
 }
 
