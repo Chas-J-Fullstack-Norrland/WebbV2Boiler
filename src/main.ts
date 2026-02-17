@@ -27,9 +27,7 @@ function usercookieset(): void {
   if (!currentUserElement) return;
   
   const username = getCookieValue("username");
-  console.log("Current user from cookie:", username);
   currentUserElement.textContent = username || "no-user";
-  console.log("Admin link element:", adminlink);
   if (username =="admin") {
     adminlink?.classList.remove("hidden");
   } else {
@@ -39,22 +37,22 @@ function usercookieset(): void {
 usercookieset();
 
 // --- ROUTING ---
-const path = window.location.pathname;
-
+const page = document.body.dataset.page;;
+console.log("Current path:", page);
 async function initApp(){
-  if (path === '/' || path === '/index.html') {
+  if (page === 'index') {
     import('./split/indexPage').then(module => {
       module.initIndexPage();
     })
-  } else if (path === '/create.html') {
+  } else if (page === 'create') {
     import('./split/createPage').then(module => {
       module.initCreatePage();
     })
-  } else if (path === '/post.html') {
+  } else if (page === 'post') {
     import('./split/postPage').then(module => {
       module.initPostPage();
     })
-  } else if (path === '/admin.html') {
+  } else if (page === 'admin') {
     import('./split/adminPage').then(module => {
       module.initAdminPage();
     })

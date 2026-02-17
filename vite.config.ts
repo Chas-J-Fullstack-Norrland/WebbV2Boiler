@@ -8,11 +8,11 @@ export default defineConfig(({ mode }) => ({
     tailwindcss(),
     VitePWA({
       devOptions: { enabled: true },
-
+      registerType: 'autoUpdate',
       manifest: {
         name: 'ABC NEWS',
         short_name: 'ABCN',
-        start_url: '/',
+        start_url: '/WebbV2Boiler/',
         display: 'standalone',
         theme_color: '#1a73e8',
         background_color: '#ffffff',
