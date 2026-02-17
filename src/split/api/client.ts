@@ -1,6 +1,6 @@
 import type { Post, Comment } from '../types';
 
-export const BASE_URL = '/api';
+export const BASE_URL = 'http://localhost:3001/api';
 export const POST_QUEUE_KEY = "post-queue";
 
 export type QueuedItem = {
