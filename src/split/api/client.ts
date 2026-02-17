@@ -1,12 +1,13 @@
 import type { Post, Comment } from '../types';
 
-export const BASE_URL = 'http://localhost:3001/api';
+export const BASE_URL = 'http://localhost:3001';
 export const POST_QUEUE_KEY = "post-queue";
 
 export type QueuedItem = {
   url: string;
   payload: Post | Comment;
 };
+console.log
 
 /**
  * Hämtar den aktuella kön av väntande anrop från localStorage.
